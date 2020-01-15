@@ -23,7 +23,7 @@ class _BuildingState extends State<Building> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String user = sharedPreferences.getString('User');
 
-    String url = '${MyConstant().urlHost}/api/users/getuser/$user';
+    String url = '${MyConstant().urlHost}api/users/getuser/$user';
     return url;
   }
 
@@ -35,6 +35,13 @@ class _BuildingState extends State<Building> {
     // print('Response = $response');
     var result = response.data['data'];
     print('result $result');
+    
+    for (var map in result) {
+      setState(() {
+        nameLogin = map['name'];
+      });
+      print('NameLogin === $nameLogin');
+    }
   }
 
   Widget showNameLogin() {
