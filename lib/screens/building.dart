@@ -35,7 +35,7 @@ class _BuildingState extends State<Building> {
     // print('Response = $response');
     var result = response.data['data'];
     print('result $result');
-    
+
     for (var map in result) {
       setState(() {
         nameLogin = map['name'];
@@ -43,6 +43,50 @@ class _BuildingState extends State<Building> {
       print('NameLogin === $nameLogin');
     }
   }
+
+  Widget menuListProduct() {
+    return ListTile(
+      leading: Icon(Icons.filter_1),
+      title: Text('List Product'),
+      subtitle: Text('Descrip List Product'),
+      onTap: () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  Widget menuInformation() {
+    return ListTile(
+      leading: Icon(Icons.filter_1),
+      title: Text('Information'),
+      subtitle: Text('Descrip Information'),
+      onTap: () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  Widget menuSignOut() {
+    return ListTile(
+      leading: Icon(
+        Icons.exit_to_app,
+        color: Colors.red,
+      ),
+      title: Text(
+        'Sign Out',
+        style: TextStyle(color: Colors.red),
+      ),
+      subtitle: Text(
+        ' Sing out and Black to Authen Page',
+        style: TextStyle(color: Colors.red.shade300),
+      ),
+      onTap: () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  
 
   Widget showNameLogin() {
     return Text('Log in by $nameLogin');
@@ -86,6 +130,9 @@ class _BuildingState extends State<Building> {
       child: ListView(
         children: <Widget>[
           showHead(),
+          menuListProduct(),
+          menuInformation(),
+          menuSignOut(),
         ],
       ),
     );
