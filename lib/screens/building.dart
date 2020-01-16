@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stafbuiding/screens/authen.dart';
 import 'package:stafbuiding/utility/my_style.dart';
 
 class Building extends StatefulWidget {
@@ -82,11 +83,25 @@ class _BuildingState extends State<Building> {
       ),
       onTap: () {
         Navigator.of(context).pop();
+        clearPrefereance();
       },
     );
   }
 
-  
+  Future<void> clearPrefereance() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    sharedPreferences.clear().then((response) {
+      MaterialPageRoute materialPageRoute =
+          MaterialPageRoute(builder: (BuildContext buildContext) {
+        return Authen();
+      });
+      Navigator.of(context).pushAndRemoveUntil(materialPageRoute,
+          (Route<dynamic> route) {
+        return false;
+      });
+    });
+  }
 
   Widget showNameLogin() {
     return Text('Log in by $nameLogin');

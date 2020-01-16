@@ -27,7 +27,7 @@ class _AuthenState extends State<Authen> {
   Future<void> checkPreferance() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     bool remember = sharedPreferences.getBool('Remember');
-    print('Remember ======== $remember');
+
     if (remember) {
       String user = sharedPreferences.getString('User');
       String password = sharedPreferences.getString('Password');
@@ -111,7 +111,6 @@ class _AuthenState extends State<Authen> {
         style: TextStyle(color: MyStyle().textColor),
       ),
       onPressed: () {
-        print('Sign Up');
         MaterialPageRoute materialPageRoute =
             MaterialPageRoute(builder: (BuildContext buildContext) {
           return Register();
