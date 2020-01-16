@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart';
 import 'package:stafbuiding/utility/my_style.dart';
+import 'package:stafbuiding/utility/normal_dailog.dart';
 
 class AddProduct extends StatefulWidget {
   @override
@@ -14,10 +17,37 @@ class _AddProductState extends State<AddProduct> {
 // field
   File file;
   double lat, lng;
+  String name , detail , urlPic;
 
 // Method
+  @override
+  void initState() {
+    super.initState();
+    findLatLng();
+  }
+
+  Future<void> findLatLng() async {
+    LocationData locationData = await findLocationData();
+    setState(() {
+      lat = locationData.latitude;
+      lng = locationData.longitude;
+      print('lat = $lat , Lng = $lng ');
+    });
+  }
+
+  Future<LocationData> findLocationData() async {
+    Location location = Location();
+    try {
+      return await location.getLocation();
+    } catch (e) {}
+  }
+
   Widget nameForm() {
-    return TextField(
+    return TextField(onChanged: (String string){
+
+      name = string.trim();
+
+    },
       decoration: InputDecoration(
         labelText: 'Name Product :',
         icon: Icon(Icons.android),
@@ -26,7 +56,11 @@ class _AddProductState extends State<AddProduct> {
   }
 
   Widget detailForm() {
-    return TextField(
+    return TextField(onChanged: (String string){
+
+        detail = string.trim();
+
+    },
       maxLines: 3,
       keyboardType: TextInputType.multiline,
       decoration: InputDecoration(
@@ -92,11 +126,24 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
+  Set<Marker> myMarker() {
+    return <Marker>[
+      Marker(
+        position: LatLng(lat, lng),
+        markerId: MarkerId('idProduct'),
+      ),
+    ].toSet();
+  }
+
+  Widget contentOfMap() {
+    return lat == null
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : showMap();
+  }
+
   Widget showMap() {
-    if (lat == null) {
-      lat = 13.7572286;
-      lng = 100.5469286;
-    }
     LatLng latLng = LatLng(lat, lng);
     CameraPosition cameraPosition = CameraPosition(
       target: latLng,
@@ -107,9 +154,33 @@ class _AddProductState extends State<AddProduct> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width,
       child: GoogleMap(
+        markers: myMarker(),
         initialCameraPosition: cameraPosition,
         mapType: MapType.normal,
         onMapCreated: (GoogleMapController googleMapController) {},
+      ),
+    );
+  }
+
+  Widget addProductButton() {
+    return Container(
+      child: RaisedButton(
+        color: MyStyle().mainColor,
+        child: Text(
+          'Add Product',
+          style: TextStyle(color: Colors.white),
+        ),
+        onPressed: () {
+          if (file == null) {
+            normalDialog(context, 'Non Choose Picture', 'Please Click Camera or Gallery');
+            
+          }else if(name == null || name.isEmpty || detail == null || detail.isEmpty){
+            normalDialog(context, 'Have Space', 'Please Fill Every Blank');
+
+          }else{
+
+          }
+        },
       ),
     );
   }
@@ -128,7 +199,8 @@ class _AddProductState extends State<AddProduct> {
           showButton(),
           nameForm(),
           detailForm(),
-          showMap(),
+          contentOfMap(),
+          addProductButton(),
         ],
       ),
     );
