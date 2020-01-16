@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:stafbuiding/utility/my_style.dart';
 
 class AddProduct extends StatefulWidget {
@@ -8,6 +11,7 @@ class AddProduct extends StatefulWidget {
 
 class _AddProductState extends State<AddProduct> {
 // field
+  File file;
 
 // Method
   Widget nameForm() {
@@ -37,8 +41,22 @@ class _AddProductState extends State<AddProduct> {
       ),
       icon: Icon(Icons.add_a_photo),
       label: Text('Camera'),
-      onPressed: () {},
+      onPressed: () {
+        cameraAndGallery(ImageSource.camera);
+      },
     );
+  }
+
+  Future<void> cameraAndGallery(ImageSource imageSource) async {
+    await ImagePicker.pickImage(
+      source: imageSource,
+      maxWidth: 800.0,
+      maxHeight: 800.0,
+    ).then((response) {
+      setState(() {
+        file = response;
+      });
+    });
   }
 
   Widget galleryButton() {
@@ -48,7 +66,9 @@ class _AddProductState extends State<AddProduct> {
       ),
       icon: Icon(Icons.add_photo_alternate),
       label: Text('Gallery'),
-      onPressed: () {},
+      onPressed: () {
+        cameraAndGallery(ImageSource.gallery);
+      },
     );
   }
 
@@ -66,7 +86,7 @@ class _AddProductState extends State<AddProduct> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width,
-      child: Image.asset('images/pic.png'),
+      child: file == null ? Image.asset('images/pic.png') : Image.file(file),
     );
   }
 
