@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stafbuiding/screens/authen.dart';
 import 'package:stafbuiding/utility/my_style.dart';
+import 'package:stafbuiding/widget/information.dart';
+import 'package:stafbuiding/widget/show_list_product.dart';
 
 class Building extends StatefulWidget {
   @override
@@ -12,6 +14,7 @@ class Building extends StatefulWidget {
 class _BuildingState extends State<Building> {
 // field
   String nameLogin = '...';
+  Widget currentWidget = ShowListProduct();
 
 //Mesthod
   @override
@@ -51,6 +54,9 @@ class _BuildingState extends State<Building> {
       title: Text('List Product'),
       subtitle: Text('Descrip List Product'),
       onTap: () {
+        setState(() {
+          currentWidget = ShowListProduct();
+        });
         Navigator.of(context).pop();
       },
     );
@@ -62,6 +68,9 @@ class _BuildingState extends State<Building> {
       title: Text('Information'),
       subtitle: Text('Descrip Information'),
       onTap: () {
+        setState(() {
+          currentWidget = Information();
+        });
         Navigator.of(context).pop();
       },
     );
@@ -175,6 +184,7 @@ class _BuildingState extends State<Building> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: currentWidget,
       drawer: showDrawer(),
       appBar: AppBar(
         backgroundColor: MyStyle().mainColor,
