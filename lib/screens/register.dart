@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:stafbuiding/utility/my_style.dart';
@@ -99,7 +98,7 @@ class _RegisterState extends State<Register> {
   }
 
   Future<void> registerThead() async {
-    String url = 'http://desktop-pkdogbs:3001/api/users/register';
+    String url = '${MyConstant().urlHost}api/users/register';
 
     Map<String, dynamic> map = Map();
     map['username'] = user;
@@ -139,7 +138,7 @@ class _RegisterState extends State<Register> {
           registerButton(),
         ],
         title: Text('Register'),
-        backgroundColor: MyStyle().mainColor,
+        backgroundColor: MyStyle().barColor,
       ),
       body: ListView(
         padding: EdgeInsets.all(30.0),

@@ -187,7 +187,7 @@ class _BuildingState extends State<Building> {
       body: currentWidget,
       drawer: showDrawer(),
       appBar: AppBar(
-        backgroundColor: MyStyle().mainColor,
+        backgroundColor: MyStyle().barColor,
         title: searchForm(),
       ),
     );
